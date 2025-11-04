@@ -35,22 +35,21 @@ def LOS(start, end, cache) -> bool:
     dx /= steps
     dy /= steps
     dz /= steps
-    offsets = [(-0.25,-0.25),(-0.25,0.25),(0.25,-0.25),(0.25,0.25),(0,0)]
-    for i in range(1, int(steps)+1):
-        xi, yi, zi = x0+dx*i, y0+dy*i, z0+dz*i
+    for i in range(1, int(steps) + 1):
+        xi, yi, zi = x0 + dx * i, y0 + dy * i, z0 + dz * i
         local_y = yi - math.floor(yi)
-        for ox, oz in offsets:
-            bx, by, bz = int(math.floor(xi+ox)), int(math.floor(yi)), int(math.floor(zi+oz))
-            block = get_block(bx, by, bz, cache)
-            if not block or block.lower() in AIRLIKE:
-                continue
-            bid = block.lower()
-            if bid in IGNORE_BLOCKS:
-                continue
-            if is_relevant(bid) and local_y>0.8:
-                continue
-            return False
+        bx, by, bz = int(math.floor(xi)), int(math.floor(yi)), int(math.floor(zi))
+        block = get_block(bx, by, bz, cache)
+        if not block or block.lower() in AIRLIKE:
+            continue
+        bid = block.lower()
+        if bid in IGNORE_BLOCKS:
+            continue
+        if is_relevant(bid) and local_y > 0.8:
+            continue
+        return False
     return True
+
 
 class Node:
     __slots__ = ("pos","parent","G","H")
@@ -250,4 +249,5 @@ def path_walk_to(goal=None, path=None, distance: float=1, look_ahead: int=1):
     minescript.player_press_backward(False)
     minescript.player_press_left(False)
     minescript.player_press_right(False)
+
 
