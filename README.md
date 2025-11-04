@@ -31,7 +31,7 @@ from your_script import path_walk_to
 target_position = (100, 65, 200)
 path_walk_to(goal=target_position)
 ```
-## Precompute a path and reuse it:
+Precompute a path and reuse it:
 ```py
 from your_script import path_find, path_walk_to
 
