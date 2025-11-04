@@ -9,18 +9,19 @@ This project is similar to the A* pathfinding algorithm, but it uses [Theta* pat
 - Handles walking on slabs and stepping up small heights.
 - Jumps automatically when needed.
  
-##path_walk_to parameters
+## path_walk_to parameters
 
 goal – The target position to walk to. Can be (x, y, z). (Optional)
 path – A precomputed path from path_find. If provided, the function will use it instead of computing a new path. (Optional)
 distance – How close the player needs to be to a path point before moving to the next one. Lower values make the player follow the path more precisely. (Optional, default value: 1)
 look_ahead – How many steps ahead of the current position the player considers for smoothing movement. Higher values create smoother motion but may react slower to obstacles. (Optional, default value: 1)
-## Usage Examples
 
-##path_find parameters
+## path_find parameters
 
 start – Starting position (x, y, z).  
 goal – Target position (x, y, z) to pathfind.
+
+## Usage Examples
 
 Move the player to a target position:
 
