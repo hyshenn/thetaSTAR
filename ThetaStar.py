@@ -161,11 +161,14 @@ def path_find(start, goal):
 
 
 def jump_loop(path_ref):
+    jump_interval = 0.25
     last_jump_time = 0
     while True:
         time.sleep(0.01)
         now = time.time()
-        if now - last_jump_time < 0.25 or not path_ref or not path_ref[0]:
+        if now - last_jump_time < jump_interval:
+            continue
+        if not path_ref or not path_ref[0]:
             continue
         px, py, pz = map(float, minescript.player_position())
         foot_y = math.floor(py)
@@ -173,12 +176,13 @@ def jump_loop(path_ref):
             range(len(path_ref[0])),
             key=lambda i: (px - (path_ref[0][i][0]+0.5))**2 + (pz - (path_ref[0][i][2]+0.5))**2
         )
-        nxt = next((p for p in path_ref[0][nearest_index:] if p[1] > math.floor(py)), None)
-        if not nxt:
-            continue
-        dx, dy, dz = px - nxt[0], py - nxt[1], pz - nxt[2]
-        dy = nxt[1] - py
-        if dx*dx + dy*dy + dz*dz <= 4 and dy > 0:
+        nxt = path_ref[0][nearest_index]
+        block_type = minescript.getblock(int(nxt[0]), int(nxt[1]), int(nxt[2]))
+        dy_actual = (nxt[1] + (0.5 if is_relevant(block_type) else 0)) - py
+        dx = nxt[0] + 0.5 - px
+        dz = nxt[2] + 0.5 - pz
+        distance = math.sqrt(dx*dx + dy_actual*dy_actual + dz*dz)
+        if distance <= 2 and dy_actual > 0.5:
             block_below = minescript.getblock(math.floor(px), foot_y-1, math.floor(pz))
             if block_below not in AIRLIKE:
                 minescript.player_press_jump(True)
@@ -249,5 +253,6 @@ def path_walk_to(goal=None, path=None, distance: float=1, look_ahead: int=1):
     minescript.player_press_backward(False)
     minescript.player_press_left(False)
     minescript.player_press_right(False)
+
 
 
